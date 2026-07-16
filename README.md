@@ -1,6 +1,6 @@
 # MARL with STL-GO Reward Assignment
 
-## Installation
+## Quick Start
 
 ```bash
 $ conda create -n marl-stl-go python=3.8 # or 3.9
@@ -9,7 +9,7 @@ $ git clone https://github.com/tianhao-stan-wu/marl-stl-go.git && cd marl-stl-go
 $ pip install -r requirements.txt
 ```
 
-## Patches
+## Install Patches
 
 Fix bugs of RLlib using patches by running the following command:
 
@@ -17,13 +17,59 @@ Fix bugs of RLlib using patches by running the following command:
 $ python marllib/patch/add_patch.py -y
 ```
 
+## Hardware (for reproducibility)
+- **OS:** Ubuntu 22.04.5 LTS
+- **CPU:** Intel Core Ultra 7 255HX
+- **GPU:** NVIDIA RTX 5070 Ti
+- **RAM:** 32 GB
+- **CUDA:** 12.1
+
+## SMAC Installation
+
+SMAC requires the StarCraft II game binary, maps, and the Python package.
+
+### 1. Install StarCraft II
+```bash
+cd ~
+wget https://raw.githubusercontent.com/oxwhirl/pymarl/master/install_sc2.sh
+bash install_sc2.sh
+```
+
+### 2. Set environment variable
+```bash
+export SC2PATH=/your/path/to/StarCraftII
+echo 'export SC2PATH=/your/path/to/StarCraftII' >> ~/.bashrc
+```
+
+### 3. Download SMAC maps
+```bash
+wget https://github.com/oxwhirl/smac/releases/download/v0.1-beta1/SMAC_Maps.zip
+unzip SMAC_Maps.zip   # type A and hit enter to replace all
+mv SMAC_Maps $SC2PATH/Maps/
+```
+
+### 4. Install SMAC Python package
+```bash
+cd /tmp
+git clone https://github.com/oxwhirl/smac.git
+cd smac
+pip install -e .
+```
+
+### 5. Verify
+```bash
+python -c "from smac.env import StarCraft2Env; print('SMAC OK')"
+```
+
+
 ## Training
 
-Run example training scripts:
+Train models in LBF or SMAC environments:
 
 ```bash
 $ cd stl-go/train     # run training scripts here to correctly save results in stl-go/results
 $ python train_lbf.py
+$ python train_smac.py
 ```
 
 ## Visualization
@@ -31,7 +77,7 @@ $ python train_lbf.py
 Monitor training progress with TensorBoard:
 
 ```bash
-tensorboard --logdir ../results
+tensorboard --logdir ../results/exp_name
 ```
 
 Then open `http://localhost:6006` in your browser.
