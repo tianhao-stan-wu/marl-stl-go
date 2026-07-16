@@ -29,16 +29,17 @@ $ cd stl-go/train     # run training scripts here to correctly save results in s
 $ python train_lbf.py
 ```
 
-### Visualization
+## Visualization
 ```bash
-pip install tensorboard
 tensorboard --logdir ../results
 ```
 
 ## Bugs and fixes
-```bash
-$ python train_lbf.py
-$ # Error: Trials did not complete, raising from tensor = torch.from_numpy(np.asarray(item))
+```traceback
+Traceback (most recent call last):
+  File "train_lbf.py", line 20, in <module>
+    mappo.fit(...)
+TypeError: can't convert np.ndarray of type numpy.object_
 ```
 
 ### quick fix

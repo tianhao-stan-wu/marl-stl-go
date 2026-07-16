@@ -15,3 +15,4 @@ importlib-metadata==4.13.0
 PyYAML
 
 gym==0.21.0 	# fixes: gym==0.20.0 is incompatible
+tensorboard==2.14.0
