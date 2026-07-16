@@ -1,5 +1,14 @@
 # MARL with STL-GO Reward Assignment
 
+## Table of Contents
+- [Quick Start](#quick-start)
+- [Install Patches](#install-patches)
+- [Environment Installation](#environment-installation)
+- [Training](#training)
+- [Visualization](#visualization)
+- [Bugs and Fixes](#bugs-and-fixes)
+- [Hardware Info](#hardware)
+
 ## Quick Start
 
 ```bash
@@ -17,14 +26,9 @@ Fix bugs of RLlib using patches by running the following command:
 $ python marllib/patch/add_patch.py -y
 ```
 
-## Hardware (for reproducibility)
-- **OS:** Ubuntu 22.04.5 LTS
-- **CPU:** Intel Core Ultra 7 255HX
-- **GPU:** NVIDIA RTX 5070 Ti
-- **RAM:** 32 GB
-- **CUDA:** 12.1
+## Environment Installation
 
-## SMAC Installation
+LBF is a pure Python environment already installed in requirements.txt.
 
 SMAC requires the StarCraft II game binary, maps, and the Python package.
 
@@ -64,7 +68,7 @@ python -c "from smac.env import StarCraft2Env; print('SMAC OK')"
 
 ## Training
 
-Train models in LBF or SMAC environments:
+Train models in LBF or SMAC:
 
 ```bash
 $ cd stl-go/train     # run training scripts here to correctly save results in stl-go/results
@@ -113,7 +117,12 @@ nano /path/to/envs/marl-stl-go/lib/python3.8/site-packages/ray/rllib/utils/torch
 +    tensor = torch.from_numpy(arr)
 ```
 
-
+## Hardware
+- **OS:** Ubuntu 22.04.5 LTS
+- **CPU:** Intel Core Ultra 7 255HX
+- **GPU:** NVIDIA RTX 5070 Ti
+- **RAM:** 32 GB
+- **CUDA:** 12.1
 
 
 <!-- 
