@@ -13,22 +13,27 @@ RESULTS_DIR = "../results"
 env = marl.make_env(environment_name="lbf", map_name="default_map")
 
 # 2. Pick algorithm + hyperparameters
-mappo = marl.algos.mappo(hyperparam_source="common")
+# algo = marl.algos.mappo(hyperparam_source="common")   # centralized critic
+algo = marl.algos.qmix(hyperparam_source="common")  # value decomposition
+# algo = marl.algos.iql(hyperparam_source="common")   # independent learning
+# algo = marl.algos.vdn(hyperparam_source="common")   # value decomposition
+# algo = marl.algos.maddpg(hyperparam_source="common") # centralized critic
 
 # 3. Build model
-model = marl.build_model(env, mappo, {"core_arch": "mlp", "encode_layer": "128-256"})
+model = marl.build_model(env, algo, {"core_arch": "mlp", "encode_layer": "128-256"})
+
 
 # 4. Train (with evaluation)
-mappo.fit(
+algo.fit(
     env, model,
-    stop={"timesteps_total": 100000},
+    stop={"timesteps_total": 10000},
     checkpoint_freq=50,
     share_policy="group",
     local_dir=RESULTS_DIR,
 )
 
 # 4. Train (skip evaluation)
-# mappo.fit(
+# algo.fit(
 #     env, model,
 #     stop={"timesteps_total": 100000},
 #     checkpoint_freq=50,
