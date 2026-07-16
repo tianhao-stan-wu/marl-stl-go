@@ -11,54 +11,64 @@ $ git clone https://github.com/tianhao-stan-wu/marl-stl-go.git && cd marl-stl-go
 $ pip install -r requirements.txt
 ```
 
-### install MARL environments
+### MARL environments
 ```bash
 $ pip install lbforaging==1.0.15
 ```
 
-### install patches
+### patches
 
 ```bash
 $ python marllib/patch/add_patch.py -y
 ```
 
-## Training examples
+## Training
 
 ```bash
 $ cd stl-go/train     # run training scripts here to correctly save results in stl-go/results
 $ python train_lbf.py
 ```
 
-### bugs
+### Visualization
+```bash
+pip install tensorboard
+tensorboard --logdir ../results
+```
 
-if see "Trials did not complete" error, raising from `tensor = torch.from_numpy(np.asarray(item))`, quick fix: disable evaluation in training script.
+## Bugs and fixes
+```bash
+$ python train_lbf.py
+$ # Error: Trials did not complete, raising from tensor = torch.from_numpy(np.asarray(item))
+```
 
-package fix (keep evaluation)
+### quick fix
+
+disable evaluation in training script
+
+### package fix (keep evaluation)
 
 ```bash
 nano /home/username/miniconda3/envs/marl-stl-go/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py
 ```
 
-Change line 121
-`else:
-	tensor = torch.from_numpy(np.asarray(item))
-`
+Change line 121:
 
-To
+```python
+else:
+    tensor = torch.from_numpy(np.asarray(item))
+```
 
-`# Everything else: Convert to numpy, then wrap as torch tensor.
+To:
+
+```python
 else:
     arr = np.asarray(item)
     if arr.dtype == np.object_:
         arr = arr.astype(np.float64)
-    tensor = torch.from_numpy(arr)`
-
-
-## Visualization
-```bash
-pip install tensorboard
-tensorboard --logdir ../results
+    tensor = torch.from_numpy(arr)
 ```
+
+
 
 
 
