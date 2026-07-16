@@ -1,3 +1,36 @@
+# MARL with Spatio-temporal Logic with Graph Operators Reward Assignment
+
+## Installation
+
+### create environment
+
+```bash
+$ conda create -n marl-stl-go python=3.8 # or 3.9
+$ conda activate marl-stl-go
+$ git clone https://github.com/tianhao-stan-wu/marl-stl-go.git && cd MARLlib
+$ pip install -r requirements.txt
+```
+
+
+### 3. install patches
+
+Fix bugs of RLlib using patches by running the following command:
+
+```bash
+$ cd marllib/patch
+$ python add_patch.py -y
+```
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 <div align="center">
 
 <img src=docs/source/images/logo1.png width=75% />
