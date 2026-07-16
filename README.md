@@ -2,8 +2,6 @@
 
 ## Installation
 
-### Clone to your desktop
-
 ```bash
 $ conda create -n marl-stl-go python=3.8 # or 3.9
 $ conda activate marl-stl-go
@@ -11,7 +9,7 @@ $ git clone https://github.com/tianhao-stan-wu/marl-stl-go.git && cd marl-stl-go
 $ pip install -r requirements.txt
 ```
 
-### Patches
+## Patches
 
 Fix bugs of RLlib using patches by running the following command:
 
