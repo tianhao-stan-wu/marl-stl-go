@@ -1,36 +1,68 @@
-# MARL with Spatio-temporal Logic with Graph Operators Reward Assignment
+# MARL with STL-GO Reward Assignment
 
 ## Installation
 
-### create environment
+### clone repository
 
 ```bash
 $ conda create -n marl-stl-go python=3.8 # or 3.9
 $ conda activate marl-stl-go
-$ git clone https://github.com/tianhao-stan-wu/marl-stl-go.git && cd MARLlib
+$ git clone https://github.com/tianhao-stan-wu/marl-stl-go.git && cd marl-stl-go
 $ pip install -r requirements.txt
 ```
 
+### install MARL environments
+```bash
+$ pip install lbforaging==1.0.15
+```
 
-### 3. install patches
-
-Fix bugs of RLlib using patches by running the following command:
+### install patches
 
 ```bash
-$ cd marllib/patch
-$ python add_patch.py -y
+$ python marllib/patch/add_patch.py -y
+```
+
+## Training examples
+
+```bash
+$ cd stl-go/train     # run training scripts here to correctly save results in stl-go/results
+$ python train_lbf.py
+```
+
+### bugs
+
+if see "Trials did not complete" error, raising from `tensor = torch.from_numpy(np.asarray(item))`, quick fix: disable evaluation in training script.
+
+package fix (keep evaluation)
+
+```bash
+nano /home/username/miniconda3/envs/marl-stl-go/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py
+```
+
+Change line 121
+`else:
+	tensor = torch.from_numpy(np.asarray(item))
+`
+
+To
+
+`# Everything else: Convert to numpy, then wrap as torch tensor.
+else:
+    arr = np.asarray(item)
+    if arr.dtype == np.object_:
+        arr = arr.astype(np.float64)
+    tensor = torch.from_numpy(arr)`
+
+
+## Visualization
+```bash
+pip install tensorboard
+tensorboard --logdir ../results
 ```
 
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
+<!-- 
 <div align="center">
 
 <img src=docs/source/images/logo1.png width=75% />
@@ -456,3 +488,4 @@ Works that are based on or closely collaborate with MARLlib <[link](https://gith
 ```
 
 
+ -->
