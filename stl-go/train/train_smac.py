@@ -23,7 +23,7 @@ model = marl.build_model(env, mappo, {"core_arch": "mlp", "encode_layer": "128-2
 mappo.fit(
     env,
     model,
-    stop={"timesteps_total": 100000},
+    stop={"timesteps_total": 1000},
     checkpoint_freq=50,
     share_policy="group",
     local_dir=RESULTS_DIR,
@@ -33,7 +33,7 @@ mappo.fit(
 # mappo.fit(
 #     env,
 #     model,
-#     stop={"timesteps_total": 100000},
+#     stop={"timesteps_total": 1000},
 #     checkpoint_freq=50,
 #     share_policy="group",
 #     local_dir=RESULTS_DIR,
