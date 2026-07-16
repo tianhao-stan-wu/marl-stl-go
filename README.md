@@ -4,6 +4,8 @@
 
 ### clone repository
 
+Clone to your desktop:
+
 ```bash
 $ conda create -n marl-stl-go python=3.8 # or 3.9
 $ conda activate marl-stl-go
@@ -11,12 +13,9 @@ $ git clone https://github.com/tianhao-stan-wu/marl-stl-go.git && cd marl-stl-go
 $ pip install -r requirements.txt
 ```
 
-### MARL environments
-```bash
-$ pip install lbforaging==1.0.15
-```
-
 ### patches
+
+Fix bugs of RLlib using patches by running the following command:
 
 ```bash
 $ python marllib/patch/add_patch.py -y
@@ -24,51 +23,53 @@ $ python marllib/patch/add_patch.py -y
 
 ## Training
 
+Run example training scripts:
+
 ```bash
 $ cd stl-go/train     # run training scripts here to correctly save results in stl-go/results
 $ python train_lbf.py
 ```
 
 ## Visualization
+
+Monitor training progress with TensorBoard:
+
 ```bash
 tensorboard --logdir ../results
 ```
 
-## Bugs and fixes
+Then open `http://localhost:6006` in your browser.
+
+## Bugs and Fixes
+
+### `TypeError: can't convert np.ndarray of type numpy.object_`
+
+Crash occurs during evaluation weight sync at `ray/rllib/utils/torch_ops.py:122`. Training runs fine — only evaluation triggers this.
+
 ```traceback
-Traceback (most recent call last):
-  File "train_lbf.py", line 20, in <module>
+File "train_lbf.py", line 20, in <module>
     mappo.fit(...)
-TypeError: can't convert np.ndarray of type numpy.object_
+TypeError: can't convert np.ndarray of type numpy.object_. The only supported types are:
+float64, float32, float16, complex64, complex128, int64, int32, int16, int8, uint8, and bool.
 ```
 
-### quick fix
+**Quick fix** — disable evaluation in the training script:
+```python
+mappo.fit(..., evaluation_interval=None)
+```
 
-disable evaluation in training script
-
-### package fix (keep evaluation)
-
+**Permanent fix** — patch Ray's `torch_ops.py` to handle `object_` arrays:
 ```bash
-nano /home/username/miniconda3/envs/marl-stl-go/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py
+nano /path/to/envs/marl-stl-go/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py
 ```
-
-Change line 121:
-
-```python
-else:
-    tensor = torch.from_numpy(np.asarray(item))
+```diff
+ else:
+-    tensor = torch.from_numpy(np.asarray(item))
++    arr = np.asarray(item)
++    if arr.dtype == np.object_:
++        arr = arr.astype(np.float64)
++    tensor = torch.from_numpy(arr)
 ```
-
-To:
-
-```python
-else:
-    arr = np.asarray(item)
-    if arr.dtype == np.object_:
-        arr = arr.astype(np.float64)
-    tensor = torch.from_numpy(arr)
-```
-
 
 
 
